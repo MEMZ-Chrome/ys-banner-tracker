@@ -35,9 +35,11 @@ jobs:
           git add images/ -f
 
           MD5="${{ steps.check.outputs.md5 }}"
+          UPLOAD_DATE="${{ steps.check.outputs.upload_date }}"
           TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
 
           git commit -m "🎨 背景图更新 [${MD5:0:8}]" \
+            -m "上传日期: ${UPLOAD_DATE}" \
             -m "检测时间: ${TIMESTAMP}" \
             -m "MD5: ${MD5}" \
             -m "自动检测并保存新的云·原神背景图"
