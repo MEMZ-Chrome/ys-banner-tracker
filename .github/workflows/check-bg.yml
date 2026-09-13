@@ -33,6 +33,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add images/ -f
+          git add url.txt
+          git add README.md
 
           MD5="${{ steps.check.outputs.md5 }}"
           UPLOAD_DATE="${{ steps.check.outputs.upload_date }}"

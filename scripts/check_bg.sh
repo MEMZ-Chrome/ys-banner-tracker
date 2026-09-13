@@ -8,6 +8,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 STATE_FILE="$REPO_ROOT/images/.bg_state.json"
 IMG_DIR="$REPO_ROOT/images"
 README_FILE="$REPO_ROOT/README.md"
+URL_LOG="$REPO_ROOT/url.txt"
 
 SIZES=(super_large large middle long short)
 for s in "${SIZES[@]}"; do
@@ -18,7 +19,8 @@ echo "=== 云·原神背景图检测 ==="
 echo "时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
 # ── 1. 调用 getUIConfig?all=true API ──
-echo "[1/6] 调用 getUIConfig API (all=true)..."
+echo "[1/7] 调用 getUIConfig API (all=true)..."
+REQUEST_TIME=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 API_RESP=$(curl -sL --max-time 30 \
   'https://api-cloudgame.mihoyo.com/hk4e_cg_cn/gamer/api/getUIConfig?all=true' \
   -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
@@ -31,11 +33,23 @@ if [ "$RETCODE" != "0" ]; then
   exit 1
 fi
 
+# 保存API原始响应到url.txt
+echo "[2/7] 记录API响应到 url.txt..."
+{
+  echo "=========================================="
+  echo "请求时间: $REQUEST_TIME"
+  echo "API: https://api-cloudgame.mihoyo.com/hk4e_cg_cn/gamer/api/getUIConfig?all=true"
+  echo "------------------------------------------"
+  echo "$API_RESP" | python3 -m json.tool 2>/dev/null || echo "$API_RESP"
+  echo "=========================================="
+  echo ""
+} >> "$URL_LOG"
+echo "  ✅ 已追加到 url.txt"
+
 # 用 python3 解析所有尺寸
 read -r DETECT_MD5 UPLOAD_DATE BG_URL < <(python3 -c "
 import sys, json, re
 data = json.load(sys.stdin)['data']['images']
-# 用 large 的 MD5 作为主标识
 large = data.get('large')
 if not large or not large.get('url'):
     print('' '', '' '', sep=' ')
@@ -57,7 +71,7 @@ echo "  MD5 (large): $DETECT_MD5"
 echo "  上传日期: $UPLOAD_DATE"
 
 # ── 2. 读取上次保存的状态 ──
-echo "[2/6] 对比历史状态..."
+echo "[3/7] 对比历史状态..."
 OLD_MD5=""
 if [ -f "$STATE_FILE" ]; then
   OLD_MD5=$(python3 -c "import json; print(json.load(open('$STATE_FILE')).get('md5',''))" 2>/dev/null || echo "")
@@ -82,9 +96,8 @@ fi
 # ── 4. 如果变化，下载所有尺寸 ──
 if [ "$CHANGED" = "true" ]; then
   echo ""
-  echo "[3/6] 下载新背景图（所有尺寸）..."
+  echo "[4/7] 下载新背景图（所有尺寸）..."
 
-  # 提取所有尺寸的 URL 和 MD5
   python3 -c "
 import json, sys
 data = json.load(sys.stdin)['data']['images']
@@ -113,22 +126,22 @@ for s in ['super_large','large','middle','long','short']:
   done
 
   # 保存新状态
-  echo "[4/6] 更新状态文件..."
+  echo "[5/7] 更新状态文件..."
   python3 -c "
 import json
 state = {
     'md5': '$DETECT_MD5',
     'upload_date': '$UPLOAD_DATE',
-    'last_check': '$(date -u '+%Y-%m-%dT%H:%M:%SZ')',
-    'last_change': '$(date -u '+%Y-%m-%dT%H:%M:%SZ')'
+    'last_check': '$REQUEST_TIME',
+    'last_change': '$REQUEST_TIME'
 }
 with open('$STATE_FILE', 'w') as f:
     json.dump(state, f, indent=2, ensure_ascii=False)
 print('  ✅ 状态已保存')
 "
 
-  # 更新 README
-  echo "[5/6] 更新 README.md..."
+  # 更新 README（在 HISTORY_START 标记后、表格分隔行后插入新行）
+  echo "[6/7] 更新 README.md..."
   python3 - "$README_FILE" "$UPLOAD_DATE" "$DETECT_MD5" <<'PYEOF'
 import sys, os, re
 
@@ -166,14 +179,17 @@ if marker_start in content and marker_end in content:
             print(f"  ⏭️ README 中已有 {md5_short} 的记录，跳过")
         else:
             lines = old_block.strip().split('\n')
+            # 找到表格分隔行（包含 --- 的行），在其后插入
             insert_idx = 0
             for i, line in enumerate(lines):
-                if re.match(r'^\|[-\s|]+\|$', line.strip()):
+                stripped = line.strip()
+                if stripped.startswith('|') and '---' in stripped:
                     insert_idx = i + 1
                     break
             if insert_idx > 0:
                 lines.insert(insert_idx, new_entry)
             else:
+                # 没找到分隔行，追加到末尾
                 lines.append(new_entry)
             new_block = '\n'.join(lines)
             content = content.replace(match.group(0), marker_start + '\n' + new_block + '\n' + marker_end)
@@ -196,7 +212,7 @@ with open(readme_path, 'w', encoding='utf-8') as f:
 PYEOF
 
 else
-  echo "[3/6] 无需下载"
+  echo "[4/7] 无需下载"
   python3 -c "
 import json, os
 state_file = '$STATE_FILE'
@@ -204,12 +220,12 @@ if os.path.exists(state_file):
     with open(state_file) as f: state = json.load(f)
 else:
     state = {'md5': '$DETECT_MD5', 'upload_date': '$UPLOAD_DATE'}
-state['last_check'] = '$(date -u '+%Y-%m-%dT%H:%M:%SZ')'
+state['last_check'] = '$REQUEST_TIME'
 with open(state_file, 'w') as f:
     json.dump(state, f, indent=2, ensure_ascii=False)
 "
-  echo "[4/6] 检查时间已更新"
-  echo "[5/6] 无需更新 README"
+  echo "[5/7] 检查时间已更新"
+  echo "[6/7] 无需更新 README"
 fi
 
 # ── 5. 输出结果 ──

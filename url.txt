@@ -1,0 +1,55 @@
+# 云·原神 API 响应记录
+
+
+
+==========================================
+请求时间: 2026-09-12T08:41:12Z
+API: https://api-cloudgame.mihoyo.com/hk4e_cg_cn/gamer/api/getUIConfig?all=true
+------------------------------------------
+{
+    "retcode": 0,
+    "message": "OK",
+    "data": {
+        "bg_image": null,
+        "images": {
+            "super_large": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/08/07/fa3ee22c001cf7c39d7da99876c8dcff_2071803666466993704.jpg",
+                "size": "0",
+                "md5": "fa3ee22c001cf7c39d7da99876c8dcff",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "large": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/08/07/aee41fcffc7ff735184bbbe44cc85a28_184320568722671009.jpg",
+                "size": "0",
+                "md5": "aee41fcffc7ff735184bbbe44cc85a28",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "middle": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/08/07/05e33708ffb819c0e7ccd69fa1dae171_355358412881345740.jpg",
+                "size": "0",
+                "md5": "05e33708ffb819c0e7ccd69fa1dae171",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "long": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/08/07/abf8aecd4a9d88bb212312131f985649_6884119298667944294.jpg",
+                "size": "0",
+                "md5": "abf8aecd4a9d88bb212312131f985649",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "short": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/08/07/7832f99994f0236a90ca8e9974cb36ac_70234035167683552.jpg",
+                "size": "0",
+                "md5": "7832f99994f0236a90ca8e9974cb36ac",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "pc": null
+        }
+    }
+}
+==========================================
+
