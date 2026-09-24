@@ -20,6 +20,7 @@
 <!-- HISTORY_START -->
 | 日期 | 预览 (large) | 下载 | MD5 |
 |------|-------------|------|-----|
+| 2026-09-16 | ![76b24cda](images/large/20260916_76b24cda.jpg) | [超大](images/super_large/20260916_76b24cda.jpg) · [大图](images/large/20260916_76b24cda.jpg) · [中图](images/middle/20260916_76b24cda.jpg) · [长图](images/long/20260916_76b24cda.jpg) · [短图](images/short/20260916_76b24cda.jpg) | `76b24cda` |
 | 2026-08-07 | ![#aee41fcf](images/large/20260807_aee41fcf.jpg) | [超大](images/super_large/20260807_fa3ee22c.jpg) · [大图](images/large/20260807_aee41fcf.jpg) · [中图](images/middle/20260807_05e33708.jpg) · [长图](images/long/20260807_abf8aecd.jpg) · [短图](images/short/20260807_7832f999.jpg) | `aee41fcf` |
 | 2026-06-29 | ![#c7b08ab8](images/large/20260629_c7b08ab8.jpg) | [超大](images/super_large/20260629_9a9c350c.jpg) · [大图](images/large/20260629_c7b08ab8.jpg) · [中图](images/middle/20260629_e615eaeb.jpg) · [长图](images/long/20260629_fe4d347a.jpg) · [短图](images/short/20260629_9d71460c.jpg) | `c7b08ab8` |
 | 2025-10-22 | ![#bad33f17](images/large/20251022_bad33f17.jpg) | [大图](images/large/20251022_bad33f17.jpg) · [竖版](images/large/20251022_b76fb9d7.jpg) | `bad33f17` |

@@ -53,3 +53,54 @@ API: https://api-cloudgame.mihoyo.com/hk4e_cg_cn/gamer/api/getUIConfig?all=true
 }
 ==========================================
 
+==========================================
+请求时间: 2026-09-24T15:04:52Z
+API: https://api-cloudgame.mihoyo.com/hk4e_cg_cn/gamer/api/getUIConfig?all=true
+------------------------------------------
+{
+    "retcode": 0,
+    "message": "OK",
+    "data": {
+        "bg_image": null,
+        "images": {
+            "super_large": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/09/16/f5c97d9d25473f4220dca63bd71aefe6_1872334754890836547.jpg",
+                "size": "0",
+                "md5": "f5c97d9d25473f4220dca63bd71aefe6",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "large": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/09/16/76b24cdaa39b04d074a61cc4523dab5d_3251994834412161323.jpg",
+                "size": "0",
+                "md5": "76b24cdaa39b04d074a61cc4523dab5d",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "middle": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/09/16/f65344bff9d690c732a7c9940de0ae34_3827396642787752006.jpg",
+                "size": "0",
+                "md5": "f65344bff9d690c732a7c9940de0ae34",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "long": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/09/16/196f2f2f474f0d34b72c5099625a9821_4441145752680456924.jpg",
+                "size": "0",
+                "md5": "196f2f2f474f0d34b72c5099625a9821",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "short": {
+                "url": "https://cloudgame-webstatic.mihoyo.com/clgm-admin-static/2026/09/16/144d5dd7164d14bde587d8e639c7e36c_1353923750952821552.jpg",
+                "size": "0",
+                "md5": "144d5dd7164d14bde587d8e639c7e36c",
+                "blur_url": "",
+                "blur_md5": ""
+            },
+            "pc": null
+        }
+    }
+}
+==========================================
+
