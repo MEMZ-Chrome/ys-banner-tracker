@@ -142,16 +142,41 @@ print('  ✅ 状态已保存')
 
   # 更新 README（在 HISTORY_START 标记后、表格分隔行后插入新行）
   echo "[6/7] 更新 README.md..."
-  python3 - "$README_FILE" "$UPLOAD_DATE" "$DETECT_MD5" <<'PYEOF'
-import sys, os, re
+  API_RESP="$API_RESP" python3 - "$README_FILE" "$UPLOAD_DATE" "$DETECT_MD5" <<'PYEOF'
+import sys, os, re, json
 
 readme_path = sys.argv[1]
 upload_date = sys.argv[2]
 bg_md5 = sys.argv[3]
+api_resp_str = os.environ.get("API_RESP", "{}")
 
 date_fmt = f"{upload_date[:4]}-{upload_date[4:6]}-{upload_date[6:8]}"
 md5_short = bg_md5[:8]
-filename = f"{upload_date}_{md5_short}"
+large_filename = f"{upload_date}_{md5_short}"
+
+try:
+    images_data = json.loads(api_resp_str).get("data", {}).get("images", {})
+except Exception:
+    images_data = {}
+
+size_labels = [
+    ("super_large", "超大"),
+    ("large", "大图"),
+    ("middle", "中图"),
+    ("long", "长图"),
+    ("short", "短图"),
+]
+
+download_links = []
+for size_key, label in size_labels:
+    item = images_data.get(size_key)
+    if item and item.get("md5"):
+        item_md5_short = item["md5"][:8]
+        download_links.append(f"[{label}](images/{size_key}/{upload_date}_{item_md5_short}.jpg)")
+    elif size_key == "large":
+        download_links.append(f"[{label}](images/large/{large_filename}.jpg)")
+
+download_str = " · ".join(download_links)
 
 with open(readme_path, 'r', encoding='utf-8') as f:
     content = f.read()
@@ -161,12 +186,8 @@ marker_end = "<!-- HISTORY_END -->"
 
 new_entry = (
     f"| {date_fmt} "
-    f"| ![{md5_short}](images/large/{filename}.jpg) "
-    f"| [超大](images/super_large/{filename}.jpg) · "
-    f"[大图](images/large/{filename}.jpg) · "
-    f"[中图](images/middle/{filename}.jpg) · "
-    f"[长图](images/long/{filename}.jpg) · "
-    f"[短图](images/short/{filename}.jpg) "
+    f"| ![#{md5_short}](images/large/{large_filename}.jpg) "
+    f"| {download_str} "
     f"| `{md5_short}` |"
 )
 
